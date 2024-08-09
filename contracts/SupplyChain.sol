@@ -82,6 +82,8 @@ contract SupplyChain {
     mapping(uint256 => WarehouseAgent) public WAR;
 
     event StageUpdated(uint256 indexed productId, STAGE stage);
+    event PaymentMade(address indexed from, address indexed to, uint256 amount, uint256 productId, STAGE stage);
+
 
     function findManufacturer(address _address) internal view returns (uint256) {
         for (uint256 i = 1; i <= manCtr; i++) {
@@ -131,36 +133,65 @@ contract SupplyChain {
     }
 
     function startManufacturing(uint256 _productId) public payable {
-        Medicine storage med = MedicineStock[_productId];
-        uint256 paymentAmount = med.price * med.quantity;
-        require(msg.value == paymentAmount, "Incorrect payment amount.");
-        med.stage = STAGE.Manufacture;
-        emit StageUpdated(_productId, STAGE.Manufacture);
-    }
+    Medicine storage med = MedicineStock[_productId];
+    uint256 paymentAmount = med.price * med.quantity;
+    require(msg.value == paymentAmount, "Incorrect payment amount.");
+
+    med.MANid = findManufacturer(msg.sender);
+    med.stage = STAGE.Manufacture;
+    emit StageUpdated(_productId, STAGE.Manufacture);
+    
+    emit PaymentMade(msg.sender, address(this), msg.value, _productId, STAGE.Manufacture);
+}
+
 
     function startShipping(uint256 _productId) public payable {
-        Medicine storage med = MedicineStock[_productId];
-        uint256 paymentAmount = med.price * med.quantity;
-        require(msg.value == paymentAmount, "Incorrect payment amount.");
-        med.stage = STAGE.Shipping;
-        emit StageUpdated(_productId, STAGE.Shipping);
-    }
+    Medicine storage med = MedicineStock[_productId];
+    uint256 paymentAmount = med.price * med.quantity;
+
+    address manufacturer = MAN[med.MANid].addr;
+    require(msg.value == paymentAmount, "Incorrect payment amount.");
+    payable(manufacturer).transfer(paymentAmount);
+
+    med.SHIPid = findShippingAgent(msg.sender);
+    med.stage = STAGE.Shipping;
+    emit StageUpdated(_productId, STAGE.Shipping);
+
+    emit PaymentMade(msg.sender, manufacturer, msg.value, _productId, STAGE.Shipping);
+}
+
 
     function startDistribution(uint256 _productId) public payable {
-        Medicine storage med = MedicineStock[_productId];
-        uint256 paymentAmount = med.price * med.quantity;
-        require(msg.value == paymentAmount, "Incorrect payment amount.");
-        med.stage = STAGE.Distribution;
-        emit StageUpdated(_productId, STAGE.Distribution);
-    }
+    Medicine storage med = MedicineStock[_productId];
+    uint256 paymentAmount = med.price * med.quantity;
+
+    address shipping = SHIP[med.SHIPid].addr;
+    require(msg.value == paymentAmount, "Incorrect payment amount.");
+    payable(shipping).transfer(paymentAmount);
+
+    med.DISid = findDistributor(msg.sender);
+    med.stage = STAGE.Distribution;
+    emit StageUpdated(_productId, STAGE.Distribution);
+
+    emit PaymentMade(msg.sender, shipping, msg.value, _productId, STAGE.Distribution);
+}
+
 
     function storeInWarehouse(uint256 _productId) public payable {
-        Medicine storage med = MedicineStock[_productId];
-        uint256 paymentAmount = med.price * med.quantity;
-        require(msg.value == paymentAmount, "Incorrect payment amount.");
-        med.stage = STAGE.Warehouse;
-        emit StageUpdated(_productId, STAGE.Warehouse);
-    }
+    Medicine storage med = MedicineStock[_productId];
+    uint256 paymentAmount = med.price * med.quantity;
+
+    address distributor = DIS[med.DISid].addr;
+    require(msg.value == paymentAmount, "Incorrect payment amount.");
+    payable(distributor).transfer(paymentAmount);
+
+    med.WARid = findWarehouseAgent(msg.sender);
+    med.stage = STAGE.Warehouse;
+    emit StageUpdated(_productId, STAGE.Warehouse);
+
+    emit PaymentMade(msg.sender, distributor, msg.value, _productId, STAGE.Warehouse);
+}
+
 
     function sell(uint256 _medicineID) public payable {
         require(_medicineID > 0 && _medicineID <= medicineCtr, "Invalid medicine ID.");

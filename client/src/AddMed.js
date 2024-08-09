@@ -13,7 +13,7 @@ function AddMed() {
     }, []);
 
     const [currentaccount, setCurrentaccount] = useState("");
-    const [loader, setloader] = useState(true);
+    const [setloader] = useState(true);
     const [SupplyChain, setSupplyChain] = useState();
     const [MED, setMED] = useState([]);
     const [CompanyName, setCompanyName] = useState("");

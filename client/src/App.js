@@ -4,6 +4,7 @@ import Home from './Home';
 import AddMed from './AddMed';
 import Supply from './Supply'
 import Track from './Track'
+import Transactions from './Transactions';
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route path="/addmed" component={AddMed} />
           <Route path="/supply" component={Supply} />
           <Route path="/track" component={Track} />
+          <Route path="/transactions" component={Transactions} />
         </Switch>
       </Router>
     </div>

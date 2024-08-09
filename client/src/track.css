@@ -1,41 +1,61 @@
-.container {
-    margin-top: 20px;
+.track-container {
+    max-width: 600px;
+    margin: auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.wait {
-    margin-top: 20%;
+.header {
     text-align: center;
+    color: #333;
 }
 
-.btn-home {
-    margin-top: 20px;
-    margin-left: 50px;
+.track-form {
+    margin-bottom: 20px;
 }
 
-hr {
-    border: 0;
-    border-top: 2px solid #eee;
+.form-group {
+    margin-bottom: 15px;
 }
 
-article {
-    margin: 10px;
-}
-
-.col-4 {
-    border: 2px solid #ccc;
+.form-control {
+    width: 100%;
     padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
-.col-3 {
-    border: 2px solid #ccc;
-    padding: 10px;
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
+.btn-primary:hover {
+    background-color: #0056b3;
 }
 
-select {
-    width: 200px;
+.med-data {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.med-data ul {
+    list-style: none;
+    padding: 0;
+}
+
+.med-data li {
+    margin-bottom: 10px;
+}
+
+.med-data strong {
+    color: #333;
 }

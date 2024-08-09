@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Web3 from 'web3';
 import SupplyChainABI from './artifacts/SupplyChain.json';
+import './track.css'; // Import a CSS file for custom styles
 
 function Track() {
     const [currentAccount, setCurrentAccount] = useState("");
@@ -16,7 +17,7 @@ function Track() {
     const loadWeb3 = async () => {
         if (window.ethereum) {
             window.web3 = new Web3(window.ethereum);
-            await window.ethereum.enable();
+            await window.ethereum.request({ method: 'eth_requestAccounts' });
         } else if (window.web3) {
             window.web3 = new Web3(window.web3.currentProvider);
         } else {
@@ -61,9 +62,9 @@ function Track() {
     };
 
     return (
-        <div className="container">
-            <h1>Track Medicine</h1>
-            <form onSubmit={handleTrack}>
+        <div className="track-container">
+            <h1 className="header">Track Medicine</h1>
+            <form onSubmit={handleTrack} className="track-form">
                 <div className="form-group">
                     <label htmlFor="ID">Product ID:</label>
                     <input
@@ -81,13 +82,15 @@ function Track() {
             {medData.id && (
                 <div className="med-data">
                     <h3>Product Details:</h3>
-                    <p>ID: {medData.id}</p>
-                    <p>Name: {medData.name}</p>
-                    <p>Destination: {medData.destinationCompanyName}</p>
-                    <p>Price: {Web3.utils.fromWei(medData.price, 'ether')} Ether</p>
-                    <p>Quantity: {medData.quantity}</p>
-                    <p>Expiration Date: {new Date(medData.expirationDate * 1000).toLocaleDateString()}</p>
-                    <p>Current Stage: {medData.stage}</p>
+                    <ul>
+                        <li><strong>ID:</strong> {medData.id}</li>
+                        <li><strong>Name:</strong> {medData.name}</li>
+                        <li><strong>Destination:</strong> {medData.destinationCompanyName}</li>
+                        <li><strong>Price:</strong> {Web3.utils.fromWei(medData.price, 'ether')} Ether</li>
+                        <li><strong>Quantity:</strong> {medData.quantity}</li>
+                        <li><strong>Expiration Date:</strong> {new Date(medData.expirationDate * 1000).toLocaleDateString()}</li>
+                        <li><strong>Current Stage:</strong> {medData.stage}</li>
+                    </ul>
                 </div>
             )}
         </div>

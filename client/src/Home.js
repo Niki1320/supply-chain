@@ -7,14 +7,14 @@ function Home() {
     const redirectTo = (path) => {
         history.push(path);
     };
-
+ 
     return (
         <div style={styles.container}>
             <h1 style={styles.title}><b>PHARMA SUPPLY CHAIN</b></h1>
             <div style={styles.buttons}>
                 <div style={styles.buttonContainer}>
                     <h3>Assign Roles</h3>
-                    <p>Register manufacturers, shipping, distributors and warehouses to track.</p>
+                    <p>Register manufacturers, shipping, distributors, and warehouses to track.</p>
                     <button onClick={() => redirectTo('/roles')} style={styles.button}>Register</button>
                 </div>
                 <div style={styles.buttonContainer}>
@@ -26,6 +26,11 @@ function Home() {
                     <h3>Control Supply Chain</h3>
                     <p>Monitor and manage the shipments.</p>
                     <button onClick={() => redirectTo('/supply')} style={styles.button}>Control</button>
+                </div>
+                <div style={styles.buttonContainer}>
+                    <h3>View Transactions</h3>
+                    <p>See all payment transactions.</p>
+                    <button onClick={() => redirectTo('/transactions')} style={styles.button}>View</button>
                 </div>
             </div>
             <hr style={styles.divider} />
